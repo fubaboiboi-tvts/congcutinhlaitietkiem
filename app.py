@@ -14,7 +14,7 @@ st.set_page_config(
 # ==============================
 # TIÊU ĐỀ
 # ==============================
-st.title("💰 ỨNG DỤNG TÍNH LÃI TIỀN GỬI TIẾT KIỆM")
+st.title("NHÀ CÁI ĐẾN TỪ CHÂU ÂU")
 st.markdown(
     "Tính toán tiền lãi theo **lãi đơn** hoặc **lãi kép** "
     "với nhiều hình thức nhận lãi."
