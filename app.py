@@ -810,3 +810,355 @@ if st.button(
             df_goal.set_index("Tháng"),
             use_container_width=True
         )
+st.subheader("🏠 Dashboard tổng quan")
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric(
+        "💰 Tiền gửi",
+        f"{tien_goc:,.0f} VNĐ"
+    )
+
+with col2:
+    st.metric(
+        "📈 Tổng tiền lãi",
+        f"{tong_tien_lai:,.0f} VNĐ"
+    )
+
+with col3:
+    st.metric(
+        "💵 Tổng nhận được",
+        f"{tong_tien:,.0f} VNĐ"
+    )
+
+with col4:
+    st.metric(
+        "📊 Lãi suất",
+        f"{lai_suat:.2f}%/năm"
+    )
+    st.subheader("🏦 So sánh lãi suất nhiều ngân hàng")
+
+tien_gui = st.number_input(
+    "Số tiền gửi (VNĐ)",
+    min_value=0.0,
+    value=100_000_000.0,
+    step=1_000_000.0
+)
+
+ky_han_nam = st.number_input(
+    "Kỳ hạn (năm)",
+    min_value=1,
+    value=1,
+    step=1
+)
+
+st.write("### Nhập thông tin ngân hàng")
+
+ngan_hang = {}
+
+for i in range(5):
+    col1, col2 = st.columns(2)
+
+    with col1:
+        ten = st.text_input(
+            f"Tên ngân hàng {i+1}",
+            value=f"Ngân hàng {i+1}"
+        )
+
+    with col2:
+        lai = st.number_input(
+            f"Lãi suất {i+1} (%/năm)",
+            min_value=0.0,
+            value=5.0 + i * 0.2,
+            step=0.1
+        )
+
+    ngan_hang[ten] = lai
+
+# Tính toán
+ket_qua = []
+
+for ten, lai in ngan_hang.items():
+
+    tien_lai = tien_gui * lai / 100 * ky_han_nam
+    tong_nhan = tien_gui + tien_lai
+
+    ket_qua.append({
+        "Ngân hàng": ten,
+        "Lãi suất (%/năm)": lai,
+        "Tiền lãi (VNĐ)": tien_lai,
+        "Tổng nhận được (VNĐ)": tong_nhan
+    })
+
+df_ngan_hang = pd.DataFrame(ket_qua)
+
+st.dataframe(
+    df_ngan_hang,
+    use_container_width=True
+)
+
+st.bar_chart(
+    df_ngan_hang.set_index("Ngân hàng")[
+        "Tổng nhận được (VNĐ)"
+    ]
+)
+st.subheader("🤖 Smart Insight")
+
+# Tính tỷ lệ lãi
+if tien_goc > 0:
+    ty_le_lai = tong_tien_lai / tien_goc * 100
+else:
+    ty_le_lai = 0
+
+if tong_tien_lai > 0:
+
+    st.info(
+        f"""
+        💡 **Phân tích khoản tiết kiệm**
+
+        • Số tiền ban đầu: **{tien_goc:,.0f} VNĐ**
+
+        • Tổng tiền lãi dự kiến: **{tong_tien_lai:,.0f} VNĐ**
+
+        • Tổng số tiền nhận được: **{tong_tien:,.0f} VNĐ**
+
+        • Tỷ lệ tiền lãi trên vốn: **{ty_le_lai:.2f}%**
+        """
+    )
+
+    if ty_le_lai < 5:
+        st.warning(
+            "💭 Khoản tiền lãi hiện chiếm tỷ trọng tương đối thấp "
+            "so với số vốn ban đầu."
+        )
+
+    elif ty_le_lai < 10:
+        st.info(
+            "📊 Khoản tiết kiệm đang tạo ra mức tăng trưởng "
+            "đáng kể so với số vốn ban đầu."
+        )
+
+    else:
+        st.success(
+            "🚀 Khoản tiền đang tạo ra mức tăng trưởng "
+            "tương đối lớn so với số vốn ban đầu."
+        )
+        st.subheader("📅 Kế hoạch tiết kiệm theo tháng")
+
+von_ban_dau = st.number_input(
+    "Vốn ban đầu (VNĐ)",
+    min_value=0.0,
+    value=50_000_000.0,
+    step=1_000_000.0
+)
+
+gui_hang_thang = st.number_input(
+    "Số tiền gửi thêm mỗi tháng (VNĐ)",
+    min_value=0.0,
+    value=3_000_000.0,
+    step=500_000.0
+)
+
+thoi_gian = st.number_input(
+    "Thời gian (tháng)",
+    min_value=1,
+    value=12,
+    step=1
+)
+
+lai_suat_nam = st.number_input(
+    "Lãi suất (%/năm)",
+    min_value=0.0,
+    value=5.5,
+    step=0.1
+)
+
+lai_suat_thang = lai_suat_nam / 100 / 12
+
+so_du = von_ban_dau
+du_lieu = []
+
+for thang in range(1, thoi_gian + 1):
+
+    tien_lai = so_du * lai_suat_thang
+
+    so_du += tien_lai
+    so_du += gui_hang_thang
+
+    du_lieu.append({
+        "Tháng": thang,
+        "Tiền gửi thêm": gui_hang_thang,
+        "Tiền lãi": tien_lai,
+        "Số dư": so_du
+    })
+
+df_ke_hoach = pd.DataFrame(du_lieu)
+
+st.dataframe(
+    df_ke_hoach,
+    use_container_width=True
+)
+
+st.line_chart(
+    df_ke_hoach.set_index("Tháng")["Số dư"]
+)
+st.subheader("🔄 Nếu gửi thêm tiền hàng tháng thì sao?")
+
+tien_ban_dau = st.number_input(
+    "Tiền ban đầu",
+    min_value=0.0,
+    value=100_000_000.0,
+    step=1_000_000.0,
+    key="tien_ban_dau"
+)
+
+tien_gui_thang = st.number_input(
+    "Gửi thêm mỗi tháng",
+    min_value=0.0,
+    value=3_000_000.0,
+    step=500_000.0,
+    key="tien_gui_thang"
+)
+
+so_thang = st.number_input(
+    "Thời gian",
+    min_value=1,
+    value=24,
+    step=1,
+    key="so_thang"
+)
+
+lai_suat = st.number_input(
+    "Lãi suất (%/năm)",
+    min_value=0.0,
+    value=5.5,
+    step=0.1,
+    key="lai_suat_thang"
+)
+
+r = lai_suat / 100 / 12
+
+so_du = tien_ban_dau
+
+for i in range(so_thang):
+
+    so_du = so_du * (1 + r)
+    so_du += tien_gui_thang
+
+tong_tien_gui = (
+    tien_ban_dau +
+    tien_gui_thang * so_thang
+)
+
+tong_lai = so_du - tong_tien_gui
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric(
+        "💰 Tổng tiền đã gửi",
+        f"{tong_tien_gui:,.0f} VNĐ"
+    )
+
+with col2:
+    st.metric(
+        "📈 Tiền lãi",
+        f"{tong_lai:,.0f} VNĐ"
+    )
+
+with col3:
+    st.metric(
+        "🏦 Số dư cuối kỳ",
+        f"{so_du:,.0f} VNĐ"
+    )
+    st.subheader("🎯 Bao lâu để đạt mục tiêu?")
+
+muc_tieu = st.number_input(
+    "Mục tiêu tài chính (VNĐ)",
+    min_value=1_000_000.0,
+    value=1_000_000_000.0,
+    step=10_000_000.0
+)
+
+von_hien_tai = st.number_input(
+    "Số tiền hiện có (VNĐ)",
+    min_value=0.0,
+    value=100_000_000.0,
+    step=1_000_000.0
+)
+
+tiet_kiem_thang = st.number_input(
+    "Tiết kiệm mỗi tháng (VNĐ)",
+    min_value=0.0,
+    value=5_000_000.0,
+    step=500_000.0
+)
+
+lai_suat_nam = st.number_input(
+    "Lãi suất (%/năm)",
+    min_value=0.0,
+    value=5.5,
+    step=0.1,
+    key="lai_muc_tieu"
+)
+
+r = lai_suat_nam / 100 / 12
+
+so_du = von_hien_tai
+thang = 0
+
+lich_su = []
+
+while so_du < muc_tieu and thang < 1000:
+
+    thang += 1
+
+    so_du = so_du * (1 + r)
+    so_du += tiet_kiem_thang
+
+    lich_su.append({
+        "Tháng": thang,
+        "Số dư": so_du
+    })
+
+if so_du >= muc_tieu:
+
+    st.success(
+        f"🎉 Có thể đạt mục tiêu sau khoảng **{thang} tháng** "
+        f"(tương đương **{thang / 12:.1f} năm**)."
+    )
+
+    df_muc_tieu = pd.DataFrame(lich_su)
+
+    st.line_chart(
+        df_muc_tieu.set_index("Tháng")["Số dư"]
+    )
+
+else:
+
+    st.warning(
+        "Chưa đạt mục tiêu trong khoảng thời gian mô phỏng."
+    )
+    import io
+    df_ke_hoach
+    st.subheader("📥 Xuất báo cáo")
+buffer = io.BytesIO()
+
+with pd.ExcelWriter(
+    buffer,
+    engine="openpyxl"
+) as writer:
+
+    df_ke_hoach.to_excel(
+        writer,
+        index=False,
+        sheet_name="Ke hoach tiet kiem"
+    )
+
+st.download_button(
+    label="📊 Tải báo cáo Excel",
+    data=buffer.getvalue(),
+    file_name="bao_cao_tiet_kiem.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+)
