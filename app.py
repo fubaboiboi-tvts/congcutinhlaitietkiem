@@ -1156,16 +1156,28 @@ else:
 # 📊 XUẤT FILE EXCEL/CSV
 # ==============================
 
-st.subheader("📊 Xuất dữ liệu")
+st.title("📊 Xuất Excel")
 
-csv = df.to_csv(
+# Dữ liệu mẫu
+data = {
+    "Tháng": [1, 2, 3, 4, 5],
+    "Tiền lãi": [100000, 200000, 300000, 400000, 500000],
+    "Số dư": [10100000, 20300000, 30600000, 41000000, 51500000]
+}
+
+# Tạo DataFrame
+df = pd.DataFrame(data)
+
+# Chuyển sang CSV
+csv_file = df.to_csv(
     index=False,
     encoding="utf-8-sig"
 )
 
+# Nút tải xuống
 st.download_button(
-    label="📥 Tải dữ liệu mở bằng Excel",
-    data=csv,
+    label="📥 Tải file Excel",
+    data=csv_file,
     file_name="bao_cao_tiet_kiem.csv",
     mime="text/csv"
 )
