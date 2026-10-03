@@ -810,7 +810,33 @@ if st.button(
             df_goal.set_index("Tháng"),
             use_container_width=True
         )
+st.subheader("🏠 Dashboard tổng quan")
 
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric(
+        "💰 Tiền gửi",
+        f"{tien_goc:,.0f} VNĐ"
+    )
+
+with col2:
+    st.metric(
+        "📈 Tổng tiền lãi",
+        f"{tong_tien_lai:,.0f} VNĐ"
+    )
+
+with col3:
+    st.metric(
+        "💵 Tổng nhận được",
+        f"{tong_tien:,.0f} VNĐ"
+    )
+
+with col4:
+    st.metric(
+        "📊 Lãi suất",
+        f"{lai_suat:.2f}%/năm"
+    )
     st.subheader("🏦 So sánh lãi suất nhiều ngân hàng")
 
 tien_gui = st.number_input(
@@ -826,8 +852,7 @@ ky_han_nam = st.number_input(
     value=1,
     step=1
 )
-
-st.write("### Nhập thông tin ngân hàng")
+st.write("### Nhập thông tin ngân hàng cần so sánh")
 
 ngan_hang = {}
 
