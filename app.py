@@ -915,48 +915,109 @@ st.bar_chart(
         "Tổng nhận được (VNĐ)"
     ]
 )
-# ==========================================
-# 🤖 SMART INSIGHT PRO
-# ==========================================
+
+# ==============================
+# 🤖 SMART INSIGHT
+# ==============================
 
 st.subheader("🤖 Smart Insight")
 
-if so_tien_gui > 0:
+# Nhập dữ liệu riêng cho Smart Insight
+tien = st.number_input(
+    "💰 Số tiền gửi (VNĐ)",
+    min_value=0.0,
+    value=100_000_000.0,
+    step=1_000_000.0,
+    key="insight_tien"
+)
 
-    ty_le_lai = tong_tien_lai / so_tien_gui * 100
+lai = st.number_input(
+    "📈 Lãi suất (%/năm)",
+    min_value=0.0,
+    value=5.5,
+    step=0.1,
+    key="insight_lai"
+)
 
-    col1, col2, col3 = st.columns(3)
+thang = st.number_input(
+    "📅 Kỳ hạn (tháng)",
+    min_value=1,
+    value=12,
+    step=1,
+    key="insight_thang"
+)
 
-    with col1:
-        st.metric(
-            "📈 Tỷ lệ sinh lời",
-            f"{ty_le_lai:.2f}%"
-        )
+# Tính lãi
+tien_lai = tien * lai / 100 * thang / 12
+tong = tien + tien_lai
 
-    with col2:
-        st.metric(
-            "💰 Tiền lãi",
-            f"{tong_tien_lai:,.0f} VNĐ"
-        )
+# Tỷ lệ sinh lời
+if tien > 0:
+    ty_le = tien_lai / tien * 100
+else:
+    ty_le = 0
 
-    with col3:
-        st.metric(
-            "🏦 Giá trị cuối kỳ",
-            f"{tong_tien:,.0f} VNĐ"
-        )
+# Kết quả
+col1, col2, col3 = st.columns(3)
 
+with col1:
+    st.metric(
+        "💰 Tiền gửi",
+        f"{tien:,.0f} VNĐ"
+    )
 
-    # Phân tích
-    st.markdown("### 💡 Phân tích tự động")
+with col2:
+    st.metric(
+        "📈 Tiền lãi",
+        f"{tien_lai:,.0f} VNĐ"
+    )
 
+with col3:
+    st.metric(
+        "🏦 Tổng cuối kỳ",
+        f"{tong:,.0f} VNĐ"
+    )
 
-    if lai_suat < 4:
+# Phân tích
+st.markdown("### 💡 Phân tích tự động")
 
-        st.info(
-            "📌 **Lãi suất hiện tại:** "
-            "Mức lãi suất bạn nhập đang dưới 4%/năm."
-        )
+st.info(
+    f"""
+    🤖 **Smart Insight**
 
+    Với số tiền gửi **{tien:,.0f} VNĐ**,
+    lãi suất **{lai:.2f}%/năm**
+    và kỳ hạn **{thang} tháng**:
+
+    📈 Tiền lãi dự kiến: **{tien_lai:,.0f} VNĐ**
+
+    🏦 Tổng tiền cuối kỳ: **{tong:,.0f} VNĐ**
+
+    📊 Tỷ lệ sinh lời: **{ty_le:.2f}%**
+    """
+)
+
+# Nhận xét tự động
+if lai == 0:
+    st.warning("⚠️ Lãi suất đang bằng 0%.")
+
+elif thang <= 3:
+    st.info(
+        "⏳ Kỳ hạn khá ngắn nên tiền lãi tích lũy chưa lớn."
+    )
+
+elif thang <= 12:
+    st.info(
+        "📊 Khoản tiết kiệm đang được tính trong "
+        "kỳ hạn ngắn đến trung hạn."
+    )
+
+else:
+    st.success(
+        "🚀 Kỳ hạn dài giúp khoản tiền có thêm thời gian "
+        "tích lũy lãi."
+    )
+    
     elif lai_suat < 6:
 
         st.info(
