@@ -303,3 +303,212 @@ st.caption(
     "Lãi suất thực tế của ngân hàng có thể thay đổi theo sản phẩm tiền gửi, "
     "kỳ hạn và phương thức nhận lãi."
 )
+# ============================================================
+# TAB SO SÁNH LÃI ĐƠN VÀ LÃI KÉP
+# ============================================================
+
+st.divider()
+
+st.header("📊 So sánh lãi đơn và lãi kép")
+
+st.write(
+    "Tính năng này giúp bạn so sánh số tiền nhận được "
+    "giữa phương pháp lãi đơn và lãi kép."
+)
+
+# -----------------------------
+# NHẬP DỮ LIỆU
+# -----------------------------
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    tien_so_sanh = st.number_input(
+        "💵 Số tiền gửi (VNĐ)",
+        min_value=1.0,
+        value=100_000_000.0,
+        step=1_000_000.0,
+        format="%.0f",
+        key="so_sanh_tien"
+    )
+
+with col2:
+    ky_han_so_sanh = st.number_input(
+        "📅 Kỳ hạn (tháng)",
+        min_value=1,
+        max_value=600,
+        value=36,
+        step=1,
+        key="so_sanh_ky_han"
+    )
+
+with col3:
+    lai_suat_so_sanh = st.number_input(
+        "📈 Lãi suất (%/năm)",
+        min_value=0.0,
+        max_value=100.0,
+        value=6.0,
+        step=0.1,
+        format="%.2f",
+        key="so_sanh_lai_suat"
+    )
+
+
+# -----------------------------
+# TÍNH LÃI
+# -----------------------------
+
+if st.button(
+    "📊 SO SÁNH",
+    use_container_width=True,
+    type="primary"
+):
+
+    lai_suat_nam = lai_suat_so_sanh / 100
+
+    # LÃI ĐƠN
+    tong_lai_don = (
+        tien_so_sanh
+        * lai_suat_nam
+        * (ky_han_so_sanh / 12)
+    )
+
+    tong_tien_don = (
+        tien_so_sanh
+        + tong_lai_don
+    )
+
+    # LÃI KÉP
+    lai_suat_thang = lai_suat_nam / 12
+
+    tong_tien_kep = (
+        tien_so_sanh
+        * (1 + lai_suat_thang) ** ky_han_so_sanh
+    )
+
+    tong_lai_kep = (
+        tong_tien_kep
+        - tien_so_sanh
+    )
+
+    # -----------------------------
+    # HIỂN THỊ KẾT QUẢ
+    # -----------------------------
+
+    st.subheader("📌 Kết quả so sánh")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.markdown("### 🔵 Lãi đơn")
+
+        st.metric(
+            "Tổng tiền lãi",
+            f"{tong_lai_don:,.0f} VNĐ"
+        )
+
+        st.metric(
+            "Tổng tiền cuối kỳ",
+            f"{tong_tien_don:,.0f} VNĐ"
+        )
+
+    with col2:
+
+        st.markdown("### 🟢 Lãi kép")
+
+        st.metric(
+            "Tổng tiền lãi",
+            f"{tong_lai_kep:,.0f} VNĐ"
+        )
+
+        st.metric(
+            "Tổng tiền cuối kỳ",
+            f"{tong_tien_kep:,.0f} VNĐ"
+        )
+
+    # -----------------------------
+    # CHÊNH LỆCH
+    # -----------------------------
+
+    chenh_lech = (
+        tong_tien_kep
+        - tong_tien_don
+    )
+
+    st.info(
+        f"💡 Chênh lệch giữa lãi kép và lãi đơn: "
+        f"**{chenh_lech:,.0f} VNĐ**"
+    )
+
+    # ========================================================
+    # BIỂU ĐỒ TĂNG TRƯỞNG
+    # ========================================================
+
+    st.subheader("📈 Biểu đồ tăng trưởng theo thời gian")
+
+    data = []
+
+    for thang in range(
+        ky_han_so_sanh + 1
+    ):
+
+        # Lãi đơn tại từng tháng
+        tien_don = (
+            tien_so_sanh
+            * (
+                1
+                + lai_suat_nam
+                * thang / 12
+            )
+        )
+
+        # Lãi kép tại từng tháng
+        tien_kep = (
+            tien_so_sanh
+            * (1 + lai_suat_thang) ** thang
+        )
+
+        data.append({
+            "Tháng": thang,
+            "Lãi đơn": tien_don,
+            "Lãi kép": tien_kep
+        })
+
+    df = pd.DataFrame(data)
+
+    # Hiển thị biểu đồ
+    st.line_chart(
+        df.set_index("Tháng")[
+            ["Lãi đơn", "Lãi kép"]
+        ]
+    )
+
+    st.caption(
+        "Biểu đồ mô phỏng sự tăng trưởng của khoản tiền "
+        "theo từng tháng."
+    )
+
+    # -----------------------------
+    # BẢNG CHI TIẾT
+    # -----------------------------
+
+    with st.expander("📋 Xem bảng chi tiết"):
+
+        df_hien_thi = df.copy()
+
+        df_hien_thi["Lãi đơn"] = (
+            df_hien_thi["Lãi đơn"]
+            .map(lambda x: f"{x:,.0f} VNĐ")
+        )
+
+        df_hien_thi["Lãi kép"] = (
+            df_hien_thi["Lãi kép"]
+            .map(lambda x: f"{x:,.0f} VNĐ")
+        )
+
+        st.dataframe(
+            df_hien_thi,
+            use_container_width=True,
+            hide_index=True
+        )
