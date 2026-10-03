@@ -513,3 +513,301 @@ if st.button(
             use_container_width=True,
             hide_index=True
         )
+# ============================================================
+# TÍNH NĂNG MỤC TIÊU TIẾT KIỆM
+# ============================================================
+
+st.divider()
+
+st.header("🎯 Mục tiêu tiết kiệm")
+
+st.write(
+    "Nhập mục tiêu tài chính của bạn. "
+    "Ứng dụng sẽ ước tính số tiền cần tiết kiệm mỗi tháng."
+)
+
+# -----------------------------
+# NHẬP THÔNG TIN
+# -----------------------------
+
+col1, col2 = st.columns(2)
+
+with col1:
+
+    muc_tieu = st.number_input(
+        "🎯 Số tiền mục tiêu (VNĐ)",
+        min_value=1.0,
+        value=200_000_000.0,
+        step=1_000_000.0,
+        format="%.0f",
+        key="muc_tieu"
+    )
+
+    tien_hien_co = st.number_input(
+        "💵 Số tiền hiện có (VNĐ)",
+        min_value=0.0,
+        value=100_000_000.0,
+        step=1_000_000.0,
+        format="%.0f",
+        key="tien_hien_co"
+    )
+
+with col2:
+
+    thoi_gian = st.number_input(
+        "📅 Thời gian đạt mục tiêu (tháng)",
+        min_value=1,
+        max_value=600,
+        value=24,
+        step=1,
+        key="thoi_gian_muc_tieu"
+    )
+
+    lai_suat_muc_tieu = st.number_input(
+        "📈 Lãi suất dự kiến (%/năm)",
+        min_value=0.0,
+        max_value=100.0,
+        value=6.0,
+        step=0.1,
+        format="%.2f",
+        key="lai_suat_muc_tieu"
+    )
+
+
+# -----------------------------
+# TÍNH TOÁN
+# -----------------------------
+
+if st.button(
+    "🎯 TÍNH KẾ HOẠCH",
+    use_container_width=True,
+    type="primary"
+):
+
+    if tien_hien_co >= muc_tieu:
+
+        st.success(
+            "🎉 Bạn đã đạt hoặc vượt mục tiêu!"
+        )
+
+    else:
+
+        r = lai_suat_muc_tieu / 100 / 12
+        n = thoi_gian
+
+        # Giá trị tương lai của số tiền hiện có
+        gia_tri_tien_hien_co = (
+            tien_hien_co
+            * (1 + r) ** n
+        )
+
+        # Số tiền còn thiếu
+        tien_con_thieu = (
+            muc_tieu
+            - gia_tri_tien_hien_co
+        )
+
+        # -----------------------------
+        # TÍNH TIỀN GỬI HÀNG THÁNG
+        # -----------------------------
+
+        if r > 0:
+
+            he_so = (
+                ((1 + r) ** n - 1)
+                / r
+            )
+
+            tien_gui_thang = (
+                tien_con_thieu
+                / he_so
+            )
+
+        else:
+
+            tien_gui_thang = (
+                (muc_tieu - tien_hien_co)
+                / n
+            )
+
+        # Không cho kết quả âm
+        tien_gui_thang = max(
+            tien_gui_thang,
+            0
+        )
+
+        # -----------------------------
+        # TÍNH TỔNG KẾT
+        # -----------------------------
+
+        tong_tien_tu_gui = (
+            tien_gui_thang * n
+        )
+
+        if r > 0:
+
+            gia_tri_khoan_gui = (
+                tien_gui_thang
+                * (
+                    ((1 + r) ** n - 1)
+                    / r
+                )
+            )
+
+        else:
+
+            gia_tri_khoan_gui = (
+                tong_tien_tu_gui
+            )
+
+        tong_du_kien = (
+            gia_tri_tien_hien_co
+            + gia_tri_khoan_gui
+        )
+
+        tong_lai = (
+            tong_du_kien
+            - tien_hien_co
+            - tong_tien_tu_gui
+        )
+
+        # ====================================================
+        # HIỂN THỊ KẾT QUẢ
+        # ====================================================
+
+        st.success(
+            "✅ Đã tạo kế hoạch tiết kiệm!"
+        )
+
+        st.subheader("📊 Kết quả")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+
+            st.metric(
+                "🎯 Mục tiêu",
+                f"{muc_tieu:,.0f} VNĐ"
+            )
+
+        with col2:
+
+            st.metric(
+                "💰 Cần gửi mỗi tháng",
+                f"{tien_gui_thang:,.0f} VNĐ"
+            )
+
+        with col3:
+
+            st.metric(
+                "📈 Lãi dự kiến",
+                f"{tong_lai:,.0f} VNĐ"
+            )
+
+        # ====================================================
+        # THANH TIẾN ĐỘ
+        # ====================================================
+
+        st.subheader("📊 Tiến độ hiện tại")
+
+        tien_do = (
+            tien_hien_co
+            / muc_tieu
+        )
+
+        tien_do = min(
+            max(tien_do, 0),
+            1
+        )
+
+        st.progress(tien_do)
+
+        st.write(
+            f"Bạn đã có **{tien_do * 100:.1f}%** "
+            f"mục tiêu."
+        )
+
+        # ====================================================
+        # TÓM TẮT
+        # ====================================================
+
+        st.subheader("📋 Kế hoạch của bạn")
+
+        st.write(
+            f"💵 Số tiền hiện có: "
+            f"**{tien_hien_co:,.0f} VNĐ**"
+        )
+
+        st.write(
+            f"🎯 Số tiền mục tiêu: "
+            f"**{muc_tieu:,.0f} VNĐ**"
+        )
+
+        st.write(
+            f"📅 Thời gian: "
+            f"**{thoi_gian} tháng**"
+        )
+
+        st.write(
+            f"💰 Cần tiết kiệm mỗi tháng: "
+            f"**{tien_gui_thang:,.0f} VNĐ**"
+        )
+
+        st.write(
+            f"📈 Tổng tiền dự kiến cuối kỳ: "
+            f"**{tong_du_kien:,.0f} VNĐ**"
+        )
+
+        # ====================================================
+        # BIỂU ĐỒ MỤC TIÊU
+        # ====================================================
+
+        st.subheader("📈 Quá trình đạt mục tiêu")
+
+        timeline = []
+
+        for thang in range(
+            thoi_gian + 1
+        ):
+
+            # Giá trị tiền hiện có sau khi sinh lãi
+            gia_tri_goc = (
+                tien_hien_co
+                * (1 + r) ** thang
+            )
+
+            # Giá trị các khoản gửi thêm
+            if r > 0:
+
+                gia_tri_gui = (
+                    tien_gui_thang
+                    * (
+                        ((1 + r) ** thang - 1)
+                        / r
+                    )
+                )
+
+            else:
+
+                gia_tri_gui = (
+                    tien_gui_thang * thang
+                )
+
+            tong_gia_tri = (
+                gia_tri_goc
+                + gia_tri_gui
+            )
+
+            timeline.append({
+                "Tháng": thang,
+                "Số tiền tích lũy": tong_gia_tri
+            })
+
+        df_goal = pd.DataFrame(
+            timeline
+        )
+
+        st.line_chart(
+            df_goal.set_index("Tháng"),
+            use_container_width=True
+        )
