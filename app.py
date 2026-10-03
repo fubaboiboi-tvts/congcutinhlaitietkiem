@@ -1045,8 +1045,7 @@ with col3:
         f"{so_du:,.0f} VNĐ"
     )
     
-    st.subheader("🎯 Bao lâu để đạt mục tiêu?")
-
+st.subheader("🎯 Bao lâu để đạt mục tiêu?")
 muc_tieu = st.number_input(
     "Mục tiêu tài chính (VNĐ)",
     min_value=1_000_000.0,
