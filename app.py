@@ -956,3 +956,62 @@ if tong_tien_lai > 0:
             "🚀 Khoản tiền đang tạo ra mức tăng trưởng "
             "tương đối lớn so với số vốn ban đầu."
         )
+st.subheader("📅 Kế hoạch tiết kiệm theo tháng")
+
+von_ban_dau = st.number_input(
+    "Vốn ban đầu (VNĐ)",
+    min_value=0.0,
+    value=50_000_000.0,
+    step=1_000_000.0
+)
+
+gui_hang_thang = st.number_input(
+    "Số tiền gửi thêm mỗi tháng (VNĐ)",
+    min_value=0.0,
+    value=3_000_000.0,
+    step=500_000.0
+)
+
+thoi_gian = st.number_input(
+    "Thời gian (tháng)",
+    min_value=1,
+    value=12,
+    step=1
+)
+
+lai_suat_nam = st.number_input(
+    "Lãi suất (%/năm)",
+    min_value=0.0,
+    value=5.5,
+    step=0.1
+)
+
+lai_suat_thang = lai_suat_nam / 100 / 12
+
+so_du = von_ban_dau
+du_lieu = []
+
+for thang in range(1, thoi_gian + 1):
+
+    tien_lai = so_du * lai_suat_thang
+
+    so_du += tien_lai
+    so_du += gui_hang_thang
+
+    du_lieu.append({
+        "Tháng": thang,
+        "Tiền gửi thêm": gui_hang_thang,
+        "Tiền lãi": tien_lai,
+        "Số dư": so_du
+    })
+
+df_ke_hoach = pd.DataFrame(du_lieu)
+
+st.dataframe(
+    df_ke_hoach,
+    use_container_width=True
+)
+
+st.line_chart(
+    df_ke_hoach.set_index("Tháng")["Số dư"]
+)
