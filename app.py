@@ -922,13 +922,12 @@ st.bar_chart(
 
 st.subheader("🤖 Smart Insight")
 
-# Nhập dữ liệu riêng cho Smart Insight
 tien = st.number_input(
     "💰 Số tiền gửi (VNĐ)",
     min_value=0.0,
     value=100_000_000.0,
     step=1_000_000.0,
-    key="insight_tien"
+    key="smart_tien"
 )
 
 lai = st.number_input(
@@ -936,7 +935,7 @@ lai = st.number_input(
     min_value=0.0,
     value=5.5,
     step=0.1,
-    key="insight_lai"
+    key="smart_lai"
 )
 
 thang = st.number_input(
@@ -944,20 +943,23 @@ thang = st.number_input(
     min_value=1,
     value=12,
     step=1,
-    key="insight_thang"
+    key="smart_thang"
 )
 
 # Tính lãi
 tien_lai = tien * lai / 100 * thang / 12
 tong = tien + tien_lai
 
-# Tỷ lệ sinh lời
+# Tính tỷ lệ sinh lời
 if tien > 0:
     ty_le = tien_lai / tien * 100
 else:
     ty_le = 0
 
-# Kết quả
+# ==============================
+# KẾT QUẢ
+# ==============================
+
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -978,44 +980,55 @@ with col3:
         f"{tong:,.0f} VNĐ"
     )
 
-# Phân tích
+# ==============================
+# PHÂN TÍCH
+# ==============================
+
 st.markdown("### 💡 Phân tích tự động")
 
 st.info(
     f"""
-    🤖 **Smart Insight**
+🤖 **Smart Insight**
 
-    Với số tiền gửi **{tien:,.0f} VNĐ**,
-    lãi suất **{lai:.2f}%/năm**
-    và kỳ hạn **{thang} tháng**:
+Với số tiền gửi **{tien:,.0f} VNĐ**,
+lãi suất **{lai:.2f}%/năm**
+và kỳ hạn **{thang} tháng**:
 
-    📈 Tiền lãi dự kiến: **{tien_lai:,.0f} VNĐ**
+📈 Tiền lãi dự kiến: **{tien_lai:,.0f} VNĐ**
 
-    🏦 Tổng tiền cuối kỳ: **{tong:,.0f} VNĐ**
+🏦 Tổng tiền cuối kỳ: **{tong:,.0f} VNĐ**
 
-    📊 Tỷ lệ sinh lời: **{ty_le:.2f}%**
-    """
+📊 Tỷ lệ sinh lời: **{ty_le:.2f}%**
+"""
 )
 
-# Nhận xét tự động
+# ==============================
+# NHẬN XÉT TỰ ĐỘNG
+# ==============================
+
 if lai == 0:
-    st.warning("⚠️ Lãi suất đang bằng 0%.")
+
+    st.warning(
+        "⚠️ Lãi suất đang bằng 0%, khoản tiền gửi không tạo ra tiền lãi."
+    )
 
 elif thang <= 3:
+
     st.info(
-        "⏳ Kỳ hạn khá ngắn nên tiền lãi tích lũy chưa lớn."
+        "⏳ Kỳ hạn khá ngắn nên số tiền lãi tích lũy chưa lớn."
     )
 
 elif thang <= 12:
+
     st.info(
-        "📊 Khoản tiết kiệm đang được tính trong "
-        "kỳ hạn ngắn đến trung hạn."
+        "📊 Khoản tiết kiệm đang ở kỳ hạn ngắn đến trung hạn, "
+        "phù hợp với mục tiêu tích lũy tương đối linh hoạt."
     )
 
 else:
+
     st.success(
-        "🚀 Kỳ hạn dài giúp khoản tiền có thêm thời gian "
-        "tích lũy lãi."
+        "🚀 Kỳ hạn dài giúp khoản tiền có thêm thời gian tích lũy lãi."
     )
     
     elif lai_suat < 6:
