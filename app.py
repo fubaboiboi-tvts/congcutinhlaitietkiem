@@ -1044,6 +1044,7 @@ with col3:
         "🏦 Số dư cuối kỳ",
         f"{so_du:,.0f} VNĐ"
     )
+    
     st.subheader("🎯 Bao lâu để đạt mục tiêu?")
 
 muc_tieu = st.number_input(
