@@ -849,3 +849,69 @@ with col4:
         "📊 Lãi suất",
         f"{lai_suat:.2f}%/năm"
     )
+st.subheader("🏦 So sánh lãi suất nhiều ngân hàng")
+
+tien_gui = st.number_input(
+    "Số tiền gửi (VNĐ)",
+    min_value=0.0,
+    value=100_000_000.0,
+    step=1_000_000.0
+)
+
+ky_han_nam = st.number_input(
+    "Kỳ hạn (năm)",
+    min_value=1,
+    value=1,
+    step=1
+)
+
+st.write("### Nhập thông tin ngân hàng")
+
+ngan_hang = {}
+
+for i in range(5):
+    col1, col2 = st.columns(2)
+
+    with col1:
+        ten = st.text_input(
+            f"Tên ngân hàng {i+1}",
+            value=f"Ngân hàng {i+1}"
+        )
+
+    with col2:
+        lai = st.number_input(
+            f"Lãi suất {i+1} (%/năm)",
+            min_value=0.0,
+            value=5.0 + i * 0.2,
+            step=0.1
+        )
+
+    ngan_hang[ten] = lai
+
+# Tính toán
+ket_qua = []
+
+for ten, lai in ngan_hang.items():
+
+    tien_lai = tien_gui * lai / 100 * ky_han_nam
+    tong_nhan = tien_gui + tien_lai
+
+    ket_qua.append({
+        "Ngân hàng": ten,
+        "Lãi suất (%/năm)": lai,
+        "Tiền lãi (VNĐ)": tien_lai,
+        "Tổng nhận được (VNĐ)": tong_nhan
+    })
+
+df_ngan_hang = pd.DataFrame(ket_qua)
+
+st.dataframe(
+    df_ngan_hang,
+    use_container_width=True
+)
+
+st.bar_chart(
+    df_ngan_hang.set_index("Ngân hàng")[
+        "Tổng nhận được (VNĐ)"
+    ]
+)
