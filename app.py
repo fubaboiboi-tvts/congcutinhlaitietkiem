@@ -1152,6 +1152,8 @@ else:
     st.warning(
         "Chưa đạt mục tiêu trong khoảng thời gian mô phỏng."
     )
+
+    df_ke_hoach
     st.subheader("📥 Xuất báo cáo")
 
 buffer = io.BytesIO()
