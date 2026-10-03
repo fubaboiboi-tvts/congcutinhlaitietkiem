@@ -915,3 +915,44 @@ st.bar_chart(
         "Tổng nhận được (VNĐ)"
     ]
 )
+st.subheader("🤖 Smart Insight")
+
+# Tính tỷ lệ lãi
+if tien_goc > 0:
+    ty_le_lai = tong_tien_lai / tien_goc * 100
+else:
+    ty_le_lai = 0
+
+if tong_tien_lai > 0:
+
+    st.info(
+        f"""
+        💡 **Phân tích khoản tiết kiệm**
+
+        • Số tiền ban đầu: **{tien_goc:,.0f} VNĐ**
+
+        • Tổng tiền lãi dự kiến: **{tong_tien_lai:,.0f} VNĐ**
+
+        • Tổng số tiền nhận được: **{tong_tien:,.0f} VNĐ**
+
+        • Tỷ lệ tiền lãi trên vốn: **{ty_le_lai:.2f}%**
+        """
+    )
+
+    if ty_le_lai < 5:
+        st.warning(
+            "💭 Khoản tiền lãi hiện chiếm tỷ trọng tương đối thấp "
+            "so với số vốn ban đầu."
+        )
+
+    elif ty_le_lai < 10:
+        st.info(
+            "📊 Khoản tiết kiệm đang tạo ra mức tăng trưởng "
+            "đáng kể so với số vốn ban đầu."
+        )
+
+    else:
+        st.success(
+            "🚀 Khoản tiền đang tạo ra mức tăng trưởng "
+            "tương đối lớn so với số vốn ban đầu."
+        )
