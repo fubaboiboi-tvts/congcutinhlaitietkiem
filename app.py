@@ -989,24 +989,24 @@ tong_tien_gui = (
 
 tong_lai = so_du - tong_tien_gui
 
-raw1, raw2, raw3 = st.raw(3)
+col1, col2, col3 = st.column(3)
 
-with raw1:
+with col1:
     st.metric(
-        "💰 Tổng tiền đã gửi",
-        f"{tong_tien_gui:,.0f} VNĐ"
+       "💰 Tổng tiền đã gửi",
+ f"{tong_tien_gui:,.0f} VNĐ"
     )
 
-with raw2:
+with col2:
     st.metric(
-        "📈 Tiền lãi",
-        f"{tong_lai:,.0f} VNĐ"
+       "📈 Tiền lãi",
+f"{tong_lai:,.0f} VNĐ"
     )
 
-with raw3:
+with col3:
     st.metric(
-        "🏦 Số dư cuối kỳ",
-        f"{so_du:,.0f} VNĐ"
+       "🏦 Số dư cuối kỳ",
+f"{so_du:,.0f} VNĐ"
     )
     
 st.subheader("🎯 Bao lâu để đạt mục tiêu?")
