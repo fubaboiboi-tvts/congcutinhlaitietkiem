@@ -812,43 +812,330 @@ if st.button(
             df_goal.set_index("Tháng"),
             use_container_width=True
         )
-st.subheader("🏠 Dashboard tổng quan")
+# ============================================================
+# 🎨 DASHBOARD TÀI CHÍNH HIỆN ĐẠI
+# ============================================================
+
+st.markdown("""
+<style>
+/* ===== DASHBOARD HEADER ===== */
+.dashboard-header {
+    padding: 10px 0 25px 0;
+}
+
+.dashboard-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
+
+.dashboard-subtitle {
+    font-size: 15px;
+    color: #94a3b8;
+}
+
+/* ===== METRIC CARDS ===== */
+.metric-card {
+    background: linear-gradient(145deg, #1e293b, #111827);
+    border: 1px solid #334155;
+    border-radius: 18px;
+    padding: 20px;
+    min-height: 145px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+    transition: all 0.2s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+    border-color: #64748b;
+}
+
+.metric-icon {
+    font-size: 26px;
+    margin-bottom: 12px;
+}
+
+.metric-label {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.metric-value {
+    color: #f8fafc;
+    font-size: 25px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.metric-description {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* ===== SECTION ===== */
+.dashboard-section {
+    margin-top: 30px;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    font-size: 21px;
+    font-weight: 750;
+    color: #f8fafc;
+}
+
+.section-subtitle {
+    color: #94a3b8;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+/* ===== INFO CARD ===== */
+.info-card {
+    background: #111827;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 18px;
+    margin-top: 10px;
+}
+
+.info-title {
+    color: #cbd5e1;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.info-value {
+    color: #f8fafc;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+/* ===== HIGHLIGHT ===== */
+.highlight-card {
+    background: linear-gradient(135deg, #172554, #1e293b);
+    border: 1px solid #3b82f6;
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.highlight-title {
+    color: #93c5fd;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.highlight-value {
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 850;
+    margin-top: 5px;
+}
+
+.highlight-small {
+    color: #94a3b8;
+    font-size: 13px;
+    margin-top: 5px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+# ============================================================
+# TÍNH TOÁN
+# ============================================================
+
+# Nếu lai_suat đang là 0.06
+tong_tien_lai = tien_goc * lai_suat * ky_han
+
+# Nếu lai_suat của bạn đang là 6 thay vì 0.06,
+# hãy dùng dòng này thay cho dòng trên:
+# tong_tien_lai = tien_goc * (lai_suat / 100) * ky_han
+
+tong_tien = tien_goc + tong_tien_lai
+
+
+# ============================================================
+# HEADER
+# ============================================================
+
+st.markdown("""
+<div class="dashboard-header">
+    <div class="dashboard-title">🏦 Dashboard tài chính</div>
+    <div class="dashboard-subtitle">
+Tổng quan khoản tiền gửi và lợi nhuận dự kiến
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
+# ============================================================
+# 4 METRIC CARDS
+# ============================================================
 
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    tien_goc = st.number_input(
-    "Số tiền gửi",
-    min_value=0.0,
-    value=10000000.0,
-    step=1000000.0
-)
-
-tong_tien_lai = 0
-tong_tien = tien_goc
-
-st.metric(
-    "💰 Tiền gửi",
-    f"{tien_goc:,.0f} VNĐ"
-)
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-icon">💰</div>
+        <div class="metric-label">TIỀN GỐC</div>
+        <div class="metric-value">{tien_goc:,.0f}</div>
+        <div class="metric-description">VND vốn ban đầu</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col2:
-    st.metric(
-        "📈 Tổng tiền lãi",
-        f"{tong_tien_lai:,.0f} VNĐ"
-    )
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-icon">📈</div>
+        <div class="metric-label">TIỀN LÃI DỰ KIẾN</div>
+        <div class="metric-value">{tong_tien_lai:,.0f}</div>
+        <div class="metric-description">
+            Lợi nhuận trong {ky_han:g} năm
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col3:
-    st.metric(
-        "💵 Tổng nhận được",
-        f"{tong_tien:,.0f} VNĐ"
-    )
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-icon">💵</div>
+        <div class="metric-label">TỔNG NHẬN ĐƯỢC</div>
+        <div class="metric-value">{tong_tien:,.0f}</div>
+        <div class="metric-description">
+            Gốc + tiền lãi
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col4:
-    st.metric(
-        "📊 Lãi suất",
-        f"{lai_suat:.2f}%/năm"
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-icon">📊</div>
+        <div class="metric-label">LÃI SUẤT</div>
+        <div class="metric-value">{lai_suat:.2%}</div>
+        <div class="metric-description">
+            Lãi suất mỗi năm
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+# ============================================================
+# KHU VỰC NHẬP TIỀN
+# ============================================================
+
+st.markdown("""
+<div class="dashboard-section">
+    <div class="section-title">💼 Khoản tiền gửi</div>
+    <div class="section-subtitle">
+        Điều chỉnh số tiền để xem kết quả thay đổi
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+input_col, summary_col = st.columns([1.5, 1])
+
+with input_col:
+    tien_goc = st.number_input(
+        "Số tiền gửi",
+        min_value=0.0,
+        value=float(tien_goc),
+        step=1_000_000.0,
+        format="%.0f"
     )
+
+with summary_col:
+    st.markdown(f"""
+    <div class="highlight-card">
+        <div class="highlight-title">💎 GIÁ TRỊ KHOẢN GỬI</div>
+        <div class="highlight-value">{tien_goc:,.0f} ₫</div>
+        <div class="highlight-small">
+            Kỳ hạn {ky_han:g} năm · Lãi suất {lai_suat:.2%}/năm
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+# ============================================================
+# BIỂU ĐỒ TĂNG TRƯỞNG
+# ============================================================
+
+st.markdown("""
+<div class="dashboard-section">
+<div class="section-title">📈 Tăng trưởng khoản tiền</div>
+    <div class="section-subtitle">
+        Giá trị khoản tiền theo thời gian
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
+# Tạo dữ liệu biểu đồ
+import pandas as pd
+
+years = list(range(0, int(ky_han) + 1))
+
+growth_data = []
+
+for year in years:
+    value = tien_goc * ((1 + lai_suat) ** year)
+
+    growth_data.append({
+        "Năm": year,
+        "Giá trị": value
+    })
+
+growth_df = pd.DataFrame(growth_data)
+
+st.line_chart(
+    growth_df.set_index("Năm"),
+    height=350
+)
+
+
+# ============================================================
+# PHÂN TÍCH NHANH
+# ============================================================
+
+st.markdown("""
+<div class="dashboard-section">
+    <div class="section-title">📊 Phân tích khoản đầu tư</div>
+</div>
+""", unsafe_allow_html=True)
+
+a, b, c = st.columns(3)
+
+with a:
+    st.markdown(f"""
+    <div class="info-card">
+        <div class="info-title">💰 Vốn ban đầu</div>
+        <div class="info-value">{tien_goc:,.0f} ₫</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with b:
+    st.markdown(f"""
+    <div class="info-card">
+        <div class="info-title">📈 Lợi nhuận</div>
+        <div class="info-value">{tong_tien_lai:,.0f} ₫</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with c:
+    st.markdown(f"""
+    <div class="info-card">
+        <div class="info-title">⏱️ Kỳ hạn</div>
+        <div class="info-value">{ky_han:g} năm</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
 st.subheader("🏦 So sánh lãi suất nhiều ngân hàng")
 
 tien_gui = st.number_input(
