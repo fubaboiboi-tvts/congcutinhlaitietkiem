@@ -445,6 +445,7 @@ if st.button(
     # BIỂU ĐỒ TĂNG TRƯỞNG
     # ========================================================
 
+import pandas as pd
     st.subheader("📈 Biểu đồ tăng trưởng theo thời gian")
 
     data = []
