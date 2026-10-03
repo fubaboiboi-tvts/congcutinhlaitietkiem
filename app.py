@@ -915,47 +915,99 @@ st.bar_chart(
         "Tổng nhận được (VNĐ)"
     ]
 )
+# ==========================================
+# 🤖 SMART INSIGHT PRO
+# ==========================================
+
 st.subheader("🤖 Smart Insight")
 
-# Tính tỷ lệ lãi
-if tien_goc > 0:
-    ty_le_lai = tong_tien_lai / tien_goc * 100
-else:
-    ty_le_lai = 0
+if so_tien_gui > 0:
 
-if tong_tien_lai > 0:
+    ty_le_lai = tong_tien_lai / so_tien_gui * 100
 
-    st.info(
-        f"""
-        💡 **Phân tích khoản tiết kiệm**
+    col1, col2, col3 = st.columns(3)
 
-        • Số tiền ban đầu: **{tien_goc:,.0f} VNĐ**
-
-        • Tổng tiền lãi dự kiến: **{tong_tien_lai:,.0f} VNĐ**
-
-        • Tổng số tiền nhận được: **{tong_tien:,.0f} VNĐ**
-
-        • Tỷ lệ tiền lãi trên vốn: **{ty_le_lai:.2f}%**
-        """
-    )
-
-    if ty_le_lai < 5:
-        st.warning(
-            "💭 Khoản tiền lãi hiện chiếm tỷ trọng tương đối thấp "
-            "so với số vốn ban đầu."
+    with col1:
+        st.metric(
+            "📈 Tỷ lệ sinh lời",
+            f"{ty_le_lai:.2f}%"
         )
 
-    elif ty_le_lai < 10:
+    with col2:
+        st.metric(
+            "💰 Tiền lãi",
+            f"{tong_tien_lai:,.0f} VNĐ"
+        )
+
+    with col3:
+        st.metric(
+            "🏦 Giá trị cuối kỳ",
+            f"{tong_tien:,.0f} VNĐ"
+        )
+
+
+    # Phân tích
+    st.markdown("### 💡 Phân tích tự động")
+
+
+    if lai_suat < 4:
+
         st.info(
-            "📊 Khoản tiết kiệm đang tạo ra mức tăng trưởng "
-            "đáng kể so với số vốn ban đầu."
+            "📌 **Lãi suất hiện tại:** "
+            "Mức lãi suất bạn nhập đang dưới 4%/năm."
+        )
+
+    elif lai_suat < 6:
+
+        st.info(
+            "📌 **Lãi suất hiện tại:** "
+            "Mức lãi suất bạn nhập nằm trong khoảng 4–6%/năm."
         )
 
     else:
+
         st.success(
-            "🚀 Khoản tiền đang tạo ra mức tăng trưởng "
-            "tương đối lớn so với số vốn ban đầu."
+            "📌 **Lãi suất hiện tại:** "
+            "Mức lãi suất bạn nhập từ 6%/năm trở lên."
         )
+
+
+    # Phân tích kỳ hạn
+    if ky_han <= 6:
+
+        st.info(
+            "⏳ **Kỳ hạn:** Bạn đang lựa chọn kỳ hạn tương đối ngắn."
+        )
+
+    elif ky_han <= 12:
+
+        st.info(
+            "⏳ **Kỳ hạn:** Đây là kỳ hạn trung hạn."
+        )
+
+    else:
+
+        st.info(
+            "⏳ **Kỳ hạn:** Đây là kỳ hạn dài hơn 12 tháng."
+        )
+
+
+    # Tổng kết
+    st.success(
+        f"""
+        🤖 **Smart Insight**
+
+        Với số vốn **{so_tien_gui:,.0f} VNĐ**, lãi suất
+        **{lai_suat:.2f}%/năm** và kỳ hạn **{ky_han} tháng**,
+
+        khoản tiền của bạn dự kiến tạo ra
+        **{tong_tien_lai:,.0f} VNĐ tiền lãi**.
+
+        Tổng giá trị cuối kỳ dự kiến là
+        **{tong_tien:,.0f} VNĐ**.
+        """
+    )
+    
 st.subheader("📅 Kế hoạch tiết kiệm theo tháng")
 
 von_ban_dau = st.number_input(
