@@ -939,7 +939,8 @@ st.dataframe(
 st.line_chart(
     df_ke_hoach.set_index("Tháng")["Số dư"]
 )
-st.subheader("🔄 Nếu gửi thêm tiền hàng tháng thì sao?")
+
+    st.subheader("🔄 Nếu gửi thêm tiền hàng tháng thì sao?")
 
 tien_ban_dau = st.number_input(
     "Tiền ban đầu",
@@ -989,25 +990,25 @@ tong_tien_gui = (
 
 tong_lai = so_du - tong_tien_gui
 
-col1, col2, col3 = st.column(3)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     st.metric(
-         "💰 Tổng tiền đã gửi",
-         f"{tong_tien_gui:,.0f} VNĐ"
+        "💰 Tổng tiền đã gửi",
+        f"{tong_tien_gui:,.0f} VNĐ"
     )
 
 with col2:
     st.metric(
-         "📈 Tiền lãi",
+        "📈 Tiền lãi",
         f"{tong_lai:,.0f} VNĐ"
     )
 
 with col3:
     st.metric(
-         "🏦 Số dư cuối kỳ",
-         f"{so_du:,.0f} VNĐ"
-    )
+        "🏦 Số dư cuối kỳ",
+        f"{so_du:,.0f} VNĐ"
+    )  
     
 st.subheader("🎯 Bao lâu để đạt mục tiêu?")
 muc_tieu = st.number_input(
