@@ -940,6 +940,180 @@ st.line_chart(
     df_ke_hoach.set_index("Tháng")["Số dư"]
 )
 
+# ==========================================
+# 🔄 GỬI THÊM TIỀN HÀNG THÁNG
+# ==========================================
+
+st.subheader("🔄 Nếu gửi thêm tiền hàng tháng thì sao?")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    tien_ban_dau = st.number_input(
+        "💰 Tiền ban đầu (VNĐ)",
+        min_value=0.0,
+        value=100_000_000.0,
+        step=1_000_000.0,
+        key="tien_ban_dau"
+    )
+
+    tien_gui_thang = st.number_input(
+        "💵 Gửi thêm mỗi tháng (VNĐ)",
+        min_value=0.0,
+        value=3_000_000.0,
+        step=500_000.0,
+        key="tien_gui_thang"
+    )
+
+with col2:
+    so_thang = st.number_input(
+        "📅 Thời gian (tháng)",
+        min_value=1,
+        value=24,
+        step=1,
+        key="so_thang"
+    )
+
+    lai_suat = st.number_input(
+        "📈 Lãi suất (%/năm)",
+        min_value=0.0,
+        value=5.5,
+        step=0.1,
+        key="lai_suat_gui_them"
+    )
+
+
+# ==========================================
+# TÍNH TOÁN
+# ==========================================
+
+lai_suat_thang = lai_suat / 100 / 12
+
+so_du = tien_ban_dau
+tong_tien_lai = 0
+
+du_lieu = []
+
+
+for thang in range(1, so_thang + 1):
+
+    # Tính lãi trên số dư hiện tại
+    tien_lai = so_du * lai_suat_thang
+
+    # Cộng lãi
+    so_du += tien_lai
+
+    # Gửi thêm tiền cuối tháng
+    so_du += tien_gui_thang
+
+    # Cộng tổng lãi
+    tong_tien_lai += tien_lai
+
+    du_lieu.append({
+        "Tháng": thang,
+        "Tiền gửi thêm": tien_gui_thang,
+        "Tiền lãi": tien_lai,
+        "Số dư": so_du
+    })
+
+
+# ==========================================
+# TỔNG KẾT
+# ==========================================
+
+tong_tien_gui = (
+    tien_ban_dau +
+    tien_gui_thang * so_thang
+)
+
+tong_nhan_duoc = so_du
+
+
+# ==========================================
+# HIỂN THỊ KẾT QUẢ
+# ==========================================
+
+st.markdown("### 📊 Kết quả dự kiến")
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric(
+        "💰 Tổng tiền tự gửi",
+        f"{tong_tien_gui:,.0f} VNĐ"
+    )
+
+with col2:
+    st.metric(
+        "📈 Tổng tiền lãi",
+        f"{tong_tien_lai:,.0f} VNĐ"
+    )
+
+with col3:
+    st.metric(
+        "🏦 Số dư cuối kỳ",
+        f"{tong_nhan_duoc:,.0f} VNĐ"
+    )
+
+with col4:
+    st.metric(
+        "🚀 Lợi nhuận",
+        f"{tong_tien_lai:,.0f} VNĐ"
+    )
+
+
+# ==========================================
+# BẢNG CHI TIẾT
+# ==========================================
+
+df_gui_them = pd.DataFrame(du_lieu)
+
+st.markdown("### 📅 Chi tiết tăng trưởng theo tháng")
+
+st.dataframe(
+    df_gui_them,
+    use_container_width=True,
+    hide_index=True
+)
+
+
+# ==========================================
+# BIỂU ĐỒ
+# ==========================================
+
+st.markdown("### 📈 Biểu đồ tăng trưởng")
+
+st.line_chart(
+    df_gui_them.set_index("Tháng")["Số dư"]
+)
+
+
+# ==========================================
+# SMART INSIGHT
+# ==========================================
+
+st.markdown("### 🤖 Smart Insight")
+
+if tong_tien_gui > 0:
+
+    ty_le_lai = (
+        tong_tien_lai /
+        tong_tien_gui *
+        100
+    )
+
+    st.info(
+        f"""
+        💡 Sau **{so_thang} tháng**, bạn đã tự bỏ vào
+        **{tong_tien_gui:,.0f} VNĐ**.
+
+        Khoản tiền lãi dự kiến là **{tong_tien_lai:,.0f} VNĐ**,
+        tương đương khoảng **{ty_le_lai:.2f}%** trên tổng số tiền bạn đã gửi.
+
+        👉 Số dư dự kiến cuối kỳ:
+        **{tong_nhan_duoc:,.0f} VNĐ**
+        """
+    )
     
 st.subheader("🎯 Bao lâu để đạt mục tiêu?")
 muc_tieu = st.number_input(
