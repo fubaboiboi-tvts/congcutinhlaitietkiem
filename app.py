@@ -816,9 +816,20 @@ col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.metric(
-        "💰 Tiền gửi",
-        f"{so_tien_gui:,.0f} VNĐ"
-    )
+       tien_goc = st.number_input(
+    "Số tiền gửi",
+    min_value=0.0,
+    value=10000000.0,
+    step=1000000.0
+)
+
+tong_tien_lai = 0
+tong_tien = tien_goc
+
+st.metric(
+    "💰 Tiền gửi",
+    f"{tien_goc:,.0f} VNĐ"
+)
     
 with col2:
     st.metric(
