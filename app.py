@@ -1152,26 +1152,3 @@ else:
     st.warning(
         "Chưa đạt mục tiêu trong khoảng thời gian mô phỏng."
     )
-
-    df_ke_hoach
-    st.subheader("📥 Xuất báo cáo")
-
-buffer = io.BytesIO()
-
-with pd.ExcelWriter(
-    buffer,
-    engine="openpyxl"
-) as writer:
-
-    df_ke_hoach.to_excel(
-        writer,
-        index=False,
-        sheet_name="Ke hoach tiet kiem"
-    )
-
-st.download_button(
-    label="📊 Tải báo cáo Excel",
-    data=buffer.getvalue(),
-    file_name="bao_cao_tiet_kiem.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-)
