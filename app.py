@@ -817,9 +817,9 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.metric(
         "💰 Tiền gửi",
-        f"{tien_goc:,.0f} VNĐ"
+        f"{so_tien_gui:,.0f} VNĐ"
     )
-
+    
 with col2:
     st.metric(
         "📈 Tổng tiền lãi",
