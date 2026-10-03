@@ -814,8 +814,6 @@ st.subheader("🏠 Dashboard tổng quan")
 
 col1, col2, col3, col4 = st.columns(4)
 
-with col1:
-    st.metric(
        tien_goc = st.number_input(
     "Số tiền gửi",
     min_value=0.0,
