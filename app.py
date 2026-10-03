@@ -1152,3 +1152,20 @@ else:
     st.warning(
         "Chưa đạt mục tiêu trong khoảng thời gian mô phỏng."
     )
+# ==============================
+# 📊 XUẤT FILE EXCEL/CSV
+# ==============================
+
+st.subheader("📊 Xuất dữ liệu")
+
+csv = df.to_csv(
+    index=False,
+    encoding="utf-8-sig"
+)
+
+st.download_button(
+    label="📥 Tải dữ liệu mở bằng Excel",
+    data=csv,
+    file_name="bao_cao_tiet_kiem.csv",
+    mime="text/csv"
+)
