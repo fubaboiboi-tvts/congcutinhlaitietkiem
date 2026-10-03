@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 st.image("logo.jpg")
 import math
 
@@ -445,7 +446,6 @@ if st.button(
     # BIỂU ĐỒ TĂNG TRƯỞNG
     # ========================================================
 
-import pandas as pd
     st.subheader("📈 Biểu đồ tăng trưởng theo thời gian")
 
     data = []
