@@ -1031,7 +1031,25 @@ else:
         "🚀 Kỳ hạn dài giúp khoản tiền có thêm thời gian tích lũy lãi."
     )
     
-    elif lai_suat < 6:
+    elif lai == 0:
+    st.warning(
+        "⚠️ Lãi suất đang bằng 0%, khoản tiền gửi không tạo ra tiền lãi."
+    )
+
+elif thang <= 3:
+    st.info(
+        "⏳ Kỳ hạn khá ngắn nên số tiền lãi tích lũy chưa lớn."
+    )
+
+elif thang <= 12:
+    st.info(
+        "📊 Khoản tiết kiệm đang ở kỳ hạn ngắn đến trung hạn."
+    )
+
+else:
+    st.success(
+        "🚀 Kỳ hạn dài giúp khoản tiền có thêm thời gian tích lũy lãi."
+    )
 
         st.info(
             "📌 **Lãi suất hiện tại:** "
