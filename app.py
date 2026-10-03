@@ -928,7 +928,6 @@ st.bar_chart(
             "Mức lãi suất bạn nhập từ 6%/năm trở lên."
         )
 
-
     # Phân tích kỳ hạn
     if ky_han <= 6:
 
