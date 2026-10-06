@@ -814,358 +814,504 @@ if st.button(
         )
 
 # =========================================================
-# 🏠 DASHBOARD HIỆN ĐẠI
+# 🚀 MODERN FINTECH DASHBOARD
 # =========================================================
+
+import streamlit as st
+import pandas as pd
+
+
+# =========================
+# CSS
+# =========================
 
 st.markdown("""
 <style>
 
-.dashboard-title {
-    font-size: 32px;
+.main-title {
+    font-size: 38px;
     font-weight: 800;
-    margin-bottom: 5px;
+    letter-spacing: -1px;
+    margin-bottom: 0px;
 }
 
-.dashboard-subtitle {
+.sub-title {
+    color: #8b8f98;
     font-size: 15px;
-    color: #777;
+    margin-bottom: 28px;
+}
+
+/* HERO */
+
+.hero {
+    padding: 30px;
+    border-radius: 24px;
+    background: linear-gradient(
+        135deg,
+        #111827 0%,
+        #1f2937 55%,
+        #111827 100%
+    );
+    color: white;
     margin-bottom: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 }
 
-.dashboard-card {
-    background: linear-gradient(135deg, #ffffff, #f7f9fc);
-    padding: 22px;
-    border-radius: 18px;
-    border: 1px solid #e8ebf0;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
-    min-height: 135px;
-}
-
-.card-icon {
-    font-size: 28px;
-    margin-bottom: 8px;
-}
-
-.card-label {
+.hero-small {
+    color: #aeb5c2;
     font-size: 14px;
-    color: #777;
-    margin-bottom: 7px;
 }
 
-.card-value {
-    font-size: 25px;
+.hero-number {
+    font-size: 40px;
     font-weight: 800;
-}
-
-.card-small {
-    font-size: 13px;
-    color: #888;
     margin-top: 5px;
 }
 
-.insight-box {
-    background: linear-gradient(135deg, #f5f7ff, #ffffff);
-    border-radius: 18px;
-    padding: 22px;
-    margin-top: 25px;
-    border: 1px solid #e5e8f0;
+.hero-profit {
+    color: #8ee6b2;
+    font-size: 15px;
+    margin-top: 5px;
 }
 
-.section-title {
-    font-size: 20px;
+/* KPI */
+
+.kpi {
+    padding: 20px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    min-height: 120px;
+}
+
+.kpi-title {
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.kpi-number {
+    font-size: 24px;
     font-weight: 750;
-    margin-bottom: 15px;
+    margin-top: 8px;
+}
+
+.kpi-note {
+    color: #9ca3af;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* WHITE CARDS */
+
+.modern-card {
+    background: white;
+    padding: 23px;
+    border-radius: 20px;
+    border: 1px solid #eceef2;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    margin-bottom: 18px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 750;
+    margin-bottom: 12px;
+}
+
+/* BADGE */
+
+.badge {
+    display: inline-block;
+    padding: 7px 13px;
+    border-radius: 30px;
+    background: #eefbf3;
+    color: #16834b;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+/* TARGET */
+
+.target-box {
+    background: linear-gradient(
+        135deg,
+        #f7f9ff,
+        #ffffff
+    );
+    padding: 22px;
+    border-radius: 20px;
+    border: 1px solid #e8ebf2;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 
-# =========================================================
-# TIÊU ĐỀ
-# =========================================================
+# =========================
+# TITLE
+# =========================
 
 st.markdown(
-    '<div class="dashboard-title">🏠 Tổng quan tài chính</div>',
+    '<div class="main-title">💎 My Savings</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="dashboard-subtitle">'
-    'Theo dõi khoản tiết kiệm của bạn một cách trực quan và dễ hiểu'
+    '<div class="sub-title">'
+    'Dashboard quản lý và theo dõi khoản tiết kiệm của bạn'
     '</div>',
     unsafe_allow_html=True
 )
 
 
-# =========================================================
-# INPUT RIÊNG CHO DASHBOARD
-# =========================================================
+# =========================
+# INPUT
+# =========================
 
-col_input1, col_input2 = st.columns(2)
+with st.expander("⚙️ Thiết lập khoản tiết kiệm", expanded=True):
 
-with col_input1:
-    dashboard_tien = st.number_input(
-        "💰 Số tiền gửi",
-        min_value=0.0,
-        value=100_000_000.0,
-        step=1_000_000.0,
-        format="%.0f",
-        key="dashboard_tien"
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        tien_gui = st.number_input(
+            "💰 Số tiền gửi",
+            min_value=0.0,
+            value=100_000_000.0,
+            step=1_000_000.0,
+            format="%.0f",
+            key="modern_dashboard_tien"
+        )
+
+    with c2:
+        lai_suat = st.number_input(
+            "📈 Lãi suất (%/năm)",
+            min_value=0.0,
+            value=5.5,
+            step=0.1,
+            key="modern_dashboard_lai"
+        )
+
+    with c3:
+        ky_han = st.number_input(
+            "📅 Kỳ hạn (tháng)",
+            min_value=1,
+            value=12,
+            step=1,
+            key="modern_dashboard_kyhan"
+        )
+
+
+# =========================
+# CALCULATION
+# =========================
+
+lai_thang = lai_suat / 100 / 12
+
+if tien_gui > 0:
+
+    tong_tien = (
+        tien_gui
+        * (1 + lai_thang) ** ky_han
     )
 
-with col_input2:
-    dashboard_lai = st.number_input(
-        "📈 Lãi suất (%/năm)",
-        min_value=0.0,
-        value=5.5,
-        step=0.1,
-        key="dashboard_lai"
-    )
-
-
-col_input3, col_input4 = st.columns(2)
-
-with col_input3:
-    dashboard_kyhan = st.number_input(
-        "📅 Kỳ hạn (tháng)",
-        min_value=1,
-        value=12,
-        step=1,
-        key="dashboard_kyhan"
-    )
-
-with col_input4:
-    dashboard_hinhthuc = st.selectbox(
-        "💳 Hình thức tính",
-        [
-            "Lãi đơn",
-            "Lãi kép"
-        ],
-        key="dashboard_hinhthuc"
-    )
-
-
-# =========================================================
-# TÍNH TOÁN
-# =========================================================
-
-if dashboard_hinhthuc == "Lãi đơn":
-
-    dashboard_lai_tien = (
-        dashboard_tien
-        * dashboard_lai / 100
-        * dashboard_kyhan / 12
-    )
+    tien_lai = tong_tien - tien_gui
 
 else:
 
-    dashboard_lai_thang = dashboard_lai / 100 / 12
-
-    dashboard_tong = (
-        dashboard_tien
-        * (1 + dashboard_lai_thang) ** dashboard_kyhan
-    )
-
-    dashboard_lai_tien = dashboard_tong - dashboard_tien
+    tong_tien = 0
+    tien_lai = 0
 
 
-dashboard_tong_tien = dashboard_tien + dashboard_lai_tien
-
-
-if dashboard_tien > 0:
-    dashboard_ty_le = (
-        dashboard_lai_tien / dashboard_tien * 100
-    )
-else:
-    dashboard_ty_le = 0
-
-
-# =========================================================
-# 4 CARD CHÍNH
-# =========================================================
-
-st.markdown(
-    '<div class="section-title">📊 Tổng quan khoản tiết kiệm</div>',
-    unsafe_allow_html=True
+ty_le_lai = (
+    tien_lai / tien_gui * 100
+    if tien_gui > 0
+    else 0
 )
 
-card1, card2, card3, card4 = st.columns(4)
 
-
-with card1:
-
-    st.markdown(
-        f"""
-        <div class="dashboard-card">
-            <div class="card-icon">💰</div>
-            <div class="card-label">Tiền gửi ban đầu</div>
-            <div class="card-value">
-                {dashboard_tien:,.0f} ₫
-            </div>
-            <div class="card-small">Số vốn ban đầu</div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-
-with card2:
-
-    st.markdown(
-        f"""
-        <div class="dashboard-card">
-            <div class="card-icon">📈</div>
-            <div class="card-label">Tiền lãi dự kiến</div>
-            <div class="card-value">
-                {dashboard_lai_tien:,.0f} ₫
-            </div>
-            <div class="card-small">
-                Sinh lời {dashboard_ty_le:.2f}%
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-
-with card3:
-
-    st.markdown(
-        f"""
-        <div class="dashboard-card">
-            <div class="card-icon">🏦</div>
-            <div class="card-label">Tổng cuối kỳ</div>
-            <div class="card-value">
-                {dashboard_tong_tien:,.0f} ₫
-            </div>
-            <div class="card-small">
-                Sau {dashboard_kyhan} tháng
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-
-with card4:
-
-    st.markdown(
-        f"""
-        <div class="dashboard-card">
-            <div class="card-icon">🚀</div>
-            <div class="card-label">Lãi suất</div>
-            <div class="card-value">
-                {dashboard_lai:.2f}%
-            </div>
-            <div class="card-small">
-                {dashboard_hinhthuc}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-
-# =========================================================
-# PHÂN TÍCH KHOẢN TIẾT KIỆM
-# =========================================================
+# =========================
+# HERO CARD
+# =========================
 
 st.markdown(
-    """
-    <div class="insight-box">
-        <div class="section-title">💡 Smart Overview</div>
+    f"""
+    <div class="hero">
+
+        <div class="hero-small">
+            💰 GIÁ TRỊ KHOẢN TIẾT KIỆM
+        </div>
+
+        <div class="hero-number">
+            {tong_tien:,.0f} ₫
+        </div>
+
+        <div class="hero-profit">
+            ↗ +{tien_lai:,.0f} ₫ tiền lãi dự kiến
+        </div>
+
+        <br>
+
+        <div class="hero-small">
+            Kỳ hạn {ky_han} tháng
+            &nbsp; • &nbsp;
+            Lãi suất {lai_suat:.2f}%/năm
+        </div>
+
+    </div>
     """,
     unsafe_allow_html=True
 )
 
-if dashboard_tien == 0:
 
-    st.warning(
-        "⚠️ Bạn chưa nhập số tiền gửi. "
-        "Hãy nhập số tiền để xem phân tích."
-    )
+# =========================
+# KPI CARDS
+# =========================
 
-elif dashboard_lai == 0:
-
-    st.warning(
-        "📌 Lãi suất hiện tại là 0%, "
-        "khoản tiền gửi chưa tạo ra lợi nhuận."
-    )
-
-elif dashboard_kyhan <= 3:
-
-    st.info(
-        "⏳ Kỳ hạn khá ngắn. "
-        "Nếu mục tiêu của bạn là tối đa hóa tiền lãi, "
-        "có thể cân nhắc kỳ hạn dài hơn."
-    )
-
-elif dashboard_kyhan <= 12:
-
-    st.success(
-        "👍 Đây là khoản tiết kiệm ngắn đến trung hạn. "
-        "Mức kỳ hạn này phù hợp nếu bạn vẫn muốn duy trì "
-        "khả năng sử dụng tiền trong tương lai gần."
-    )
-
-else:
-
-    st.success(
-        "🚀 Kỳ hạn dài giúp tiền có nhiều thời gian tích lũy "
-        "lãi hơn và phù hợp với mục tiêu tiết kiệm dài hạn."
-    )
+k1, k2, k3, k4 = st.columns(4)
 
 
-# =========================================================
-# THANH TỶ LỆ VỐN / LÃI
-# =========================================================
-
-st.markdown("### 📊 Cơ cấu khoản tiền")
-
-if dashboard_tong_tien > 0:
-
-    ty_le_von = dashboard_tien / dashboard_tong_tien
-    ty_le_lai = dashboard_lai_tien / dashboard_tong_tien
-
-    st.write(
-        f"💰 Vốn ban đầu: **{ty_le_von * 100:.2f}%**"
-    )
-
-    st.progress(min(ty_le_von, 1.0))
-
-    st.write(
-        f"📈 Tiền lãi: **{ty_le_lai * 100:.2f}%**"
-    )
-
-    st.progress(min(ty_le_lai, 1.0))
-
-
-# =========================================================
-# KẾT LUẬN
-# =========================================================
-
-st.markdown("### 🎯 Đánh giá nhanh")
-
-if dashboard_lai_tien > 0:
-
-    st.write(
+with k1:
+    st.markdown(
         f"""
-        Với **{dashboard_tien:,.0f} ₫** gửi trong **{dashboard_kyhan} tháng**
-        ở mức lãi suất **{dashboard_lai:.2f}%/năm**,
-        bạn dự kiến nhận được khoảng
-        **{dashboard_lai_tien:,.0f} ₫ tiền lãi**.
+        <div class="kpi">
+            <div class="kpi-title">VỐN BAN ĐẦU</div>
+            <div class="kpi-number">
+                {tien_gui:,.0f} ₫
+            </div>
+            <div class="kpi-note">
+                Số tiền bạn gửi
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-        👉 Tổng giá trị khoản tiết kiệm cuối kỳ khoảng
-        **{dashboard_tong_tien:,.0f} ₫**.
+
+with k2:
+    st.markdown(
+        f"""
+        <div class="kpi">
+            <div class="kpi-title">TIỀN LÃI</div>
+            <div class="kpi-number">
+                {tien_lai:,.0f} ₫
+            </div>
+            <div class="kpi-note">
+                +{ty_le_lai:.2f}% lợi nhuận
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+with k3:
+    st.markdown(
+        f"""
+        <div class="kpi">
+            <div class="kpi-title">LÃI SUẤT</div>
+            <div class="kpi-number">
+                {lai_suat:.2f}%
+            </div>
+            <div class="kpi-note">
+                mỗi năm
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+with k4:
+    st.markdown(
+        f"""
+        <div class="kpi">
+            <div class="kpi-title">THỜI GIAN</div>
+            <div class="kpi-number">
+                {ky_han}
+            </div>
+            <div class="kpi-note">
+                tháng
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+st.write("")
+
+
+# =========================
+# CHART + INSIGHT
+# =========================
+
+left, right = st.columns([1.5, 1])
+
+
+# =========================
+# GROWTH CHART
+# =========================
+
+with left:
+
+    st.markdown(
         """
+        <div class="modern-card">
+            <div class="card-title">
+                📈 Tăng trưởng tài sản
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
-else:
+    data = []
 
-    st.write(
-        "Hãy nhập số tiền và lãi suất để hệ thống đưa ra đánh giá."
+    for month in range(0, int(ky_han) + 1):
+
+        value = (
+            tien_gui
+            * (1 + lai_thang) ** month
+        )
+
+        data.append({
+            "Tháng": month,
+            "Giá trị": value
+        })
+
+    df_dashboard = pd.DataFrame(data)
+
+    st.line_chart(
+        df_dashboard.set_index("Tháng"),
+        height=280
     )
+
+
+# =========================
+# INSIGHT
+# =========================
+
+with right:
+
+    st.markdown(
+        """
+        <div class="modern-card">
+            <div class="card-title">
+                🤖 Smart Insight
+            </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    if lai_suat >= 6:
+
+        st.markdown(
+            '<div class="badge">🔥 Lãi suất tốt</div>',
+            unsafe_allow_html=True
+        )
+
+        st.write(
+            "Mức lãi suất hiện tại khá hấp dẫn "
+            "đối với khoản tiết kiệm."
+        )
+
+    elif lai_suat >= 4:
+
+        st.markdown(
+            '<div class="badge">👍 Mức ổn định</div>',
+            unsafe_allow_html=True
+        )
+
+        st.write(
+            "Lãi suất ở mức tương đối ổn định "
+            "cho kế hoạch tiết kiệm."
+        )
+
+    else:
+
+        st.markdown(
+            '<div class="badge">💡 Có thể tối ưu</div>',
+            unsafe_allow_html=True
+        )
+
+        st.write(
+            "Bạn có thể so sánh thêm các mức lãi suất "
+            "khác để tối ưu lợi nhuận."
+        )
+
+    st.markdown(
+        f"""
+        <br>
+        Với khoản vốn hiện tại, bạn có thể tạo ra
+        <b>{tien_lai:,.0f} ₫</b> tiền lãi
+        sau <b>{ky_han} tháng</b>.
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+# =========================
+# PORTFOLIO
+# =========================
+
+st.markdown(
+    """
+    <div class="modern-card">
+        <div class="card-title">
+            🎯 Cơ cấu tài sản
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+col_a, col_b = st.columns(2)
+
+with col_a:
+
+    st.write("💰 Vốn ban đầu")
+
+    if tong_tien > 0:
+        von_percent = tien_gui / tong_tien
+    else:
+        von_percent = 0
+
+    st.progress(min(von_percent, 1.0))
+
+    st.caption(
+        f"{von_percent * 100:.2f}% tổng giá trị"
+    )
+
+
+with col_b:
+
+    st.write("📈 Tiền lãi")
+
+    if tong_tien > 0:
+        lai_percent = tien_lai / tong_tien
+    else:
+        lai_percent = 0
+
+    st.progress(min(lai_percent, 1.0))
+
+    st.caption(
+        f"{lai_percent * 100:.2f}% tổng giá trị"
+    )
+
+
+# =========================
+# FINAL MESSAGE
+# =========================
+
+if tien_lai > 0:
+
+    st.success(
+        f"✨ Nếu duy trì khoản gửi này trong {ky_han} tháng, "
+        f"giá trị dự kiến đạt **{tong_tien:,.0f} ₫**."
+    )
+
 
 st.subheader("🏦 So sánh lãi suất nhiều ngân hàng")
 
