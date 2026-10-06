@@ -1339,7 +1339,7 @@ st.line_chart(
 # 🔄 GỬI THÊM TIỀN HÀNG THÁNG
 # ==========================================
 
-st.subheader("🔄 Nếu gửi thêm tiền hàng tháng thì sao?")
+st.subheader("🔄 Gửi thêm tiền vào hằng tháng ")
 
 col1, col2 = st.columns(2)
 
