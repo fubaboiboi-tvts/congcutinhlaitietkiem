@@ -820,17 +820,18 @@ if st.button(
 import streamlit as st
 
 
-# =========================
-# STYLE
-# =========================
+# =========================================================
+# STYLE + HEADER
+# =========================================================
 
-st.markdown("""
+st.html("""
 <style>
 
 body {
     background: #f8faff;
 }
 
+/* HEADER */
 .dashboard-title {
     font-size: 38px;
     font-weight: 800;
@@ -838,107 +839,35 @@ body {
 }
 
 .dashboard-subtitle {
-    color: #7c8299;
+    color: #7d8499;
     font-size: 16px;
-    margin-bottom: 25px;
+    margin-top: 4px;
 }
 
-.input-section {
-    background: white;
-    padding: 20px 25px;
-    border-radius: 22px;
-    box-shadow: 0 8px 30px rgba(80,90,150,.07);
-    border: 1px solid #edf0f8;
-    margin-bottom: 30px;
-}
-
-.kpi-card {
-    padding: 22px;
-    border-radius: 22px;
-    min-height: 145px;
-    border: 1px solid rgba(100,110,180,.12);
-    box-shadow: 0 8px 25px rgba(70,80,130,.06);
-}
-
-.blue {
-    background: linear-gradient(145deg,#f4f8ff,#e8f1ff);
-}
-
-.green {
-    background: linear-gradient(145deg,#f2fffb,#e4faf3);
-}
-
-.purple {
-    background: linear-gradient(145deg,#f8f5ff,#eee9ff);
-}
-
-.orange {
-    background: linear-gradient(145deg,#fffaf5,#fff0e7);
-}
-
-.kpi-label {
-    font-size: 15px;
-    color: #697087;
-    margin-top: 7px;
-}
-
-.kpi-value {
-    font-size: 27px;
-    font-weight: 800;
-    color: #20264a;
-    margin-top: 7px;
-}
-
-.kpi-note {
-    font-size: 13px;
-    color: #858ba0;
-    margin-top: 6px;
-}
-
-.hero-card {
-    background: linear-gradient(
-        110deg,
-        #536de6,
-        #665bd4,
-        #8060d9
-    );
-    border-radius: 28px;
-    padding: 30px;
-    color: white;
-    box-shadow: 0 18px 40px rgba(83,100,220,.25);
-    margin-top: 25px;
-}
-
-.hero-label {
-    font-size: 15px;
-    opacity: .85;
-}
-
-.hero-money {
-    font-size: 42px;
-    font-weight: 800;
-    margin: 7px 0 12px 0;
-}
-
-.hero-profit {
-    display: inline-block;
-    background: rgba(255,255,255,.20);
-    padding: 8px 16px;
-    border-radius: 30px;
+.quote {
+    color: #777fc0;
     font-size: 14px;
+    font-style: italic;
+    text-align: right;
+    margin-top: -45px;
+    margin-bottom: 28px;
 }
 
-.hero-info {
-    font-size: 14px;
-    opacity: .9;
-    margin-top: 18px;
+/* INPUT AREA */
+.input-card {
+    background: #ffffff;
+    border: 1px solid #e9edf7;
+    border-radius: 24px;
+    padding: 18px 24px;
+    box-shadow: 0 8px 25px rgba(72, 83, 140, 0.06);
 }
 
+/* SECTION */
 .section-title {
     font-size: 27px;
     font-weight: 800;
-    color: #242943;
-    margin-top: 10px;
+    color: #252943;
+    margin-top: 30px;
 }
 
 .section-subtitle {
@@ -947,96 +876,201 @@ body {
     margin-bottom: 18px;
 }
 
-.quote {
-    text-align: right;
-    color: #7d80b4;
+/* KPI */
+.kpi {
+    border-radius: 22px;
+    padding: 22px;
+    min-height: 145px;
+    border: 1px solid rgba(100,110,180,.12);
+    box-shadow: 0 8px 25px rgba(70,80,130,.06);
+}
+
+.kpi-blue {
+    background: linear-gradient(145deg,#f4f8ff,#e6f0ff);
+}
+
+.kpi-green {
+    background: linear-gradient(145deg,#f2fffb,#e3faf3);
+}
+
+.kpi-purple {
+    background: linear-gradient(145deg,#f8f5ff,#eee9ff);
+}
+
+.kpi-orange {
+    background: linear-gradient(145deg,#fffaf5,#fff0e7);
+}
+
+.kpi-icon {
+    font-size: 25px;
+}
+
+.kpi-label {
+    color: #697087;
     font-size: 14px;
-    font-style: italic;
-    margin-top: -50px;
-    margin-bottom: 30px;
+    margin-top: 8px;
+}
+
+.kpi-value {
+    color: #20264a;
+    font-size: 26px;
+    font-weight: 800;
+    margin-top: 6px;
+}
+
+.kpi-note {
+    color: #858ba0;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+/* HERO */
+.hero {
+    margin-top: 25px;
+    padding: 28px 30px;
+    border-radius: 28px;
+    background: linear-gradient(
+        110deg,
+        #536de6 0%,
+        #665bd6 55%,
+        #8462da 100%
+    );
+    color: white;
+    box-shadow: 0 18px 40px rgba(84,96,220,.24);
+}
+
+.hero-layout {
+    display: grid;
+    grid-template-columns: 150px 1fr 210px;
+    align-items: center;
+    gap: 25px;
+}
+
+.hero-pig {
+    font-size: 75px;
+    text-align: center;
+    filter: drop-shadow(0 8px 8px rgba(0,0,0,.15));
+}
+
+.hero-label {
+    font-size: 14px;
+    opacity: .82;
+    letter-spacing: .4px;
+}
+
+.hero-money {
+    font-size: 40px;
+    font-weight: 800;
+    margin: 7px 0 12px;
+}
+
+.hero-profit {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 30px;
+    background: rgba(255,255,255,.18);
+    font-size: 13px;
+}
+
+.hero-side {
+    border-left: 1px solid rgba(255,255,255,.25);
+    padding-left: 25px;
+}
+
+.hero-side-label {
+    font-size: 12px;
+    opacity: .7;
+    margin-bottom: 4px;
+}
+
+.hero-side-value {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 17px;
+}
+
+/* MOBILE */
+@media (max-width: 800px) {
+    .hero-layout {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero-side {
+        border-left: none;
+        border-top: 1px solid rgba(255,255,255,.25);
+        padding-left: 0;
+        padding-top: 18px;
+    }
 }
 
 </style>
-""", unsafe_allow_html=True)
+""")
 
 
-# =========================
+# =========================================================
 # HEADER
-# =========================
+# =========================================================
 
-st.markdown(
-    '<div class="dashboard-title">🏠 Dashboard</div>',
-    unsafe_allow_html=True
-)
+st.html("""
+<div class="dashboard-title">🏠 Dashboard</div>
 
-st.markdown(
-    '<div class="dashboard-subtitle">'
-    'Quản lý khoản tiết kiệm của bạn một cách thông minh'
-    '</div>',
-    unsafe_allow_html=True
-)
+<div class="dashboard-subtitle">
+    Quản lý khoản tiết kiệm của bạn một cách thông minh
+</div>
 
-st.markdown(
-    '<div class="quote">Tiết kiệm hôm nay,<br>'
-    'vững vàng tương lai ♡</div>',
-    unsafe_allow_html=True
-)
+<div class="quote">
+    Tiết kiệm hôm nay,<br>
+    vững vàng tương lai ♡
+</div>
+""")
 
 
-# =========================
+# =========================================================
 # INPUT
-# =========================
+# =========================================================
 
-st.markdown(
-    '<div class="input-section">',
-    unsafe_allow_html=True
-)
+st.html('<div class="input-card">')
 
 c1, c2, c3 = st.columns(3)
 
 with c1:
     tien_gui = st.number_input(
-        "💰  Số tiền gửi",
+        "💰 Số tiền gửi",
         min_value=0.0,
         value=100_000_000.0,
         step=1_000_000.0,
         format="%.0f",
-        key="modern_dashboard_tien"
+        key="dashboard_tien_gui"
     )
 
 with c2:
     lai_suat = st.number_input(
-        "📈  Lãi suất (%/năm)",
+        "📈 Lãi suất (%/năm)",
         min_value=0.0,
         value=5.5,
         step=0.1,
-        key="modern_dashboard_lai"
+        format="%.2f",
+        key="dashboard_lai_suat"
     )
 
 with c3:
     ky_han = st.number_input(
-        "📅  Kỳ hạn (tháng)",
+        "📅 Kỳ hạn (tháng)",
         min_value=1,
         value=12,
         step=1,
-        key="modern_dashboard_kyhan"
+        key="dashboard_ky_han"
     )
 
-st.markdown('</div>', unsafe_allow_html=True)
+st.html("</div>")
 
 
-# =========================
-# CALCULATE
-# =========================
+# =========================================================
+# CALCULATION
+# =========================================================
 
-tien_lai = (
-    tien_gui
-    * lai_suat
-    / 100
-    * ky_han
-    / 12
-)
-
+tien_lai = tien_gui * lai_suat / 100 * ky_han / 12
 tong_tien = tien_gui + tien_lai
 
 ty_le_lai = (
@@ -1046,111 +1080,132 @@ ty_le_lai = (
 )
 
 
-# =========================
+# =========================================================
 # OVERVIEW
-# =========================
+# =========================================================
 
-st.markdown(
-    '<div class="section-title">📊 Tổng quan</div>',
-    unsafe_allow_html=True
-)
+st.html("""
+<div class="section-title">📊 Tổng quan</div>
 
-st.markdown(
-    '<div class="section-subtitle">'
-    'Các chỉ số quan trọng về khoản tiết kiệm của bạn'
-    '</div>',
-    unsafe_allow_html=True
-)
+<div class="section-subtitle">
+    Các chỉ số quan trọng về khoản tiết kiệm của bạn
+</div>
+""")
 
 
 a, b, c, d = st.columns(4)
 
 
 with a:
-    st.markdown(
-        f'''
-        <div class="kpi-card blue">
-            <div style="font-size:25px;">💰</div>
-            <div class="kpi-label">Tiền gửi</div>
-            <div class="kpi-value">{tien_gui:,.0f} ₫</div>
-            <div class="kpi-note">Số tiền ban đầu</div>
-        </div>
-        ''',
-        unsafe_allow_html=True
-    )
+    st.html(f"""
+    <div class="kpi kpi-blue">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-label">Tiền gửi</div>
+        <div class="kpi-value">{tien_gui:,.0f} ₫</div>
+        <div class="kpi-note">Số tiền ban đầu</div>
+    </div>
+    """)
 
 
 with b:
-    st.markdown(
-        f'''
-        <div class="kpi-card green">
-            <div style="font-size:25px;">📈</div>
-            <div class="kpi-label">Tiền lãi</div>
-            <div class="kpi-value">{tien_lai:,.0f} ₫</div>
-            <div class="kpi-note">↗ +{ty_le_lai:.2f}%</div>
-        </div>
-        ''',
-        unsafe_allow_html=True
-    )
+    st.html(f"""
+    <div class="kpi kpi-green">
+        <div class="kpi-icon">📈</div>
+        <div class="kpi-label">Tiền lãi</div>
+        <div class="kpi-value">{tien_lai:,.0f} ₫</div>
+        <div class="kpi-note">↗ +{ty_le_lai:.2f}% lợi nhuận</div>
+    </div>
+    """)
 
 
 with c:
-    st.markdown(
-        f'''
-        <div class="kpi-card purple">
-            <div style="font-size:25px;">📅</div>
-            <div class="kpi-label">Kỳ hạn</div>
-            <div class="kpi-value">{ky_han} tháng</div>
-            <div class="kpi-note">Thời gian gửi</div>
-        </div>
-        ''',
-        unsafe_allow_html=True
-    )
+    st.html(f"""
+    <div class="kpi kpi-purple">
+        <div class="kpi-icon">📅</div>
+        <div class="kpi-label">Kỳ hạn</div>
+        <div class="kpi-value">{ky_han} tháng</div>
+        <div class="kpi-note">Thời gian gửi</div>
+    </div>
+    """)
 
 
 with d:
-    st.markdown(
-        f'''
-        <div class="kpi-card orange">
-            <div style="font-size:25px;">%</div>
-            <div class="kpi-label">Lãi suất</div>
-            <div class="kpi-value">{lai_suat:.2f}%</div>
-            <div class="kpi-note">Mỗi năm</div>
-        </div>
-        ''',
-        unsafe_allow_html=True
-    )
+    st.html(f"""
+    <div class="kpi kpi-orange">
+        <div class="kpi-icon">%</div>
+        <div class="kpi-label">Lãi suất</div>
+        <div class="kpi-value">{lai_suat:.2f}%</div>
+        <div class="kpi-note">Mỗi năm</div>
+    </div>
+    """)
 
 
-# =========================
+# =========================================================
 # HERO CARD
-# =========================
+# =========================================================
 
-st.markdown(
-    f'''
-    <div class="hero-card">
+st.html(f"""
+<div class="hero">
 
-        <div class="hero-label">
-            💎 &nbsp; GIÁ TRỊ DỰ KIẾN CUỐI KỲ
+    <div class="hero-layout">
+
+        <div class="hero-pig">
+            🐷
+            <div style="font-size:28px;margin-top:-15px;">
+                🪙🪙
+            </div>
         </div>
 
-        <div class="hero-money">
-            {tong_tien:,.0f} ₫
+        <div>
+
+            <div class="hero-label">
+                💎 &nbsp; GIÁ TRỊ DỰ KIẾN CUỐI KỲ
+            </div>
+
+            <div class="hero-money">
+                {tong_tien:,.0f} ₫
+            </div>
+
+            <div class="hero-profit">
+                ↗ &nbsp; +{tien_lai:,.0f} ₫ tiền lãi
+            </div>
+
         </div>
 
-        <div class="hero-profit">
-            ↗ &nbsp; +{tien_lai:,.0f} ₫ tiền lãi
-        </div>
+        <div class="hero-side">
 
-        <div class="hero-info">
-            📅 Kỳ hạn: <b>{ky_han} tháng</b>
-            &nbsp;&nbsp;&nbsp; • &nbsp;&nbsp;&nbsp;
-            📈 Lãi suất: <b>{lai_suat:.2f}%/năm</b>
+            <div class="hero-side-label">
+                📅 KỲ HẠN
+            </div>
+
+            <div class="hero-side-value">
+                {ky_han} tháng
+            </div>
+
+            <div class="hero-side-label">
+                📈 LÃI SUẤT
+            </div>
+
+            <div class="hero-side-value">
+                {lai_suat:.2f}%/năm
+            </div>
+
         </div>
 
     </div>
-    ''',
-    unsafe_allow_html=True
+
+</div>
+""")
+
+
+# =========================================================
+# FOOTER
+# =========================================================
+
+st.write("")
+
+st.caption(
+    "💡 Dashboard giúp bạn theo dõi nhanh hiệu quả của khoản tiết kiệm."
 )
 
 st.subheader("🏦 So sánh lãi suất nhiều ngân hàng")
