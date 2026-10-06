@@ -1463,7 +1463,7 @@ with col4:
 
 df_gui_them = pd.DataFrame(du_lieu)
 
-st.markdown("### 📅 CHI TIẾT TẮNG TRƯỞNG THEO THÁNG ")
+st.markdown("### 📅 CHI TIẾT TĂNG TRƯỞNG THEO THÁNG ")
 
 st.dataframe(
     df_gui_them,
