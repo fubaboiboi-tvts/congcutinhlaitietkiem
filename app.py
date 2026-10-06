@@ -27,7 +27,7 @@ st.divider()
 # ==============================
 # NHẬP THÔNG TIN
 # ==============================
-st.subheader("📋 Thông tin khoản tiền gửi")
+st.subheader("📋 THÔNG TIN KHOẢN TIỀN GỬI ")
 
 # Số tiền gửi
 tien_gui = st.number_input(
@@ -311,7 +311,7 @@ st.caption(
 
 st.divider()
 
-st.header("📊 So sánh lãi đơn và lãi kép")
+st.header("📊 SO SÁNH LÃI ĐƠN VÀ LÃI KÉP ")
 
 st.write(
     "Tính năng này giúp bạn so sánh số tiền nhận được "
@@ -520,7 +520,7 @@ if st.button(
 
 st.divider()
 
-st.header("🎯 Mục tiêu tiết kiệm")
+st.header("🎯 MỤC TIÊU TIẾT KIỆM ")
 
 st.write(
     "Nhập mục tiêu tài chính của bạn. "
@@ -1013,7 +1013,7 @@ body {
 # =========================================================
 
 st.html("""
-<div class="dashboard-title">🏠 Dashboard</div>
+<div class="dashboard-title">🏠 DASHBOARD </div>
 
 <div class="dashboard-subtitle">
     Quản lý khoản tiết kiệm của bạn một cách thông minh
@@ -1085,7 +1085,7 @@ ty_le_lai = (
 # =========================================================
 
 st.html("""
-<div class="section-title">📊 Tổng quan</div>
+<div class="section-title">📊 TỔNG QUAN </div>
 
 <div class="section-subtitle">
     Các chỉ số quan trọng về khoản tiết kiệm của bạn
@@ -1208,7 +1208,7 @@ st.caption(
     "💡 Dashboard giúp bạn theo dõi nhanh hiệu quả của khoản tiết kiệm."
 )
 
-st.subheader("🏦 So sánh lãi suất nhiều ngân hàng")
+st.subheader("🏦 SO SÁNH LÃI SUẤT NHIỀU NGÂN HÀNG ")
 
 tien_gui = st.number_input(
     "Số tiền gửi (VNĐ)",
@@ -1224,7 +1224,7 @@ ky_han_nam = st.number_input(
     step=1
 )
 
-st.write("### Nhập thông tin ngân hàng")
+st.write("### NHẬP THÔNG TIN NGÂN HÀNG ")
 
 ngan_hang = {}
 
@@ -1275,7 +1275,7 @@ st.bar_chart(
     ]
 )
     
-st.subheader("📅 Kế hoạch tiết kiệm theo tháng")
+st.subheader("📅 KẾ HOẠCH TIẾT KIỆM THEO THÁNG ")
 
 von_ban_dau = st.number_input(
     "Vốn ban đầu (VNĐ)",
@@ -1339,7 +1339,7 @@ st.line_chart(
 # 🔄 GỬI THÊM TIỀN HÀNG THÁNG
 # ==========================================
 
-st.subheader("🔄 Gửi thêm tiền vào hằng tháng ")
+st.subheader("🔄 SỐ TIỀN NHẬN ĐƯỢC NẾU GỬI THÊM VÀO MỖI THÁNG ")
 
 col1, col2 = st.columns(2)
 
@@ -1428,7 +1428,7 @@ tong_nhan_duoc = so_du
 # HIỂN THỊ KẾT QUẢ
 # ==========================================
 
-st.markdown("### 📊 Kết quả dự kiến")
+st.markdown("### 📊 KẾT QUẢ DỰ KIẾN ")
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -1463,7 +1463,7 @@ with col4:
 
 df_gui_them = pd.DataFrame(du_lieu)
 
-st.markdown("### 📅 Chi tiết tăng trưởng theo tháng")
+st.markdown("### 📅 CHI TIẾT TẮNG TRƯỞNG THEO THÁNG ")
 
 st.dataframe(
     df_gui_them,
@@ -1476,7 +1476,7 @@ st.dataframe(
 # BIỂU ĐỒ
 # ==========================================
 
-st.markdown("### 📈 Biểu đồ tăng trưởng")
+st.markdown("### 📈 BIỂU ĐỒ TĂNG TRƯỞNG ")
 
 st.line_chart(
     df_gui_them.set_index("Tháng")["Số dư"]
@@ -1487,7 +1487,7 @@ st.line_chart(
 # SMART INSIGHT
 # ==========================================
 
-st.markdown("### 🤖 Smart Insight")
+st.markdown("### 🤖 SMART INSIGHT ")
 
 if tong_tien_gui > 0:
 
@@ -1510,7 +1510,7 @@ if tong_tien_gui > 0:
         """
     )
     
-st.subheader("🎯 Bao lâu để đạt mục tiêu?")
+st.subheader("🎯 BAO LÂU ĐỂ ĐẠT ĐƯỢC MỤC TIÊU TÀI CHÍNH ?")
 muc_tieu = st.number_input(
     "Mục tiêu tài chính (VNĐ)",
     min_value=1_000_000.0,
@@ -1581,7 +1581,7 @@ else:
 # 📊 XUẤT FILE EXCEL/CSV
 # ==============================
 
-st.title("📊 Xuất Excel")
+st.title("📊 XUẤT FILE EXCEL ")
 
 # Dữ liệu mẫu
 data = {
